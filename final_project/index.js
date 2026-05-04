@@ -10,7 +10,7 @@ app.use(express.json());
 // Session setup
 app.use("/customer", session({ secret: "fingerprint_customer", resave: true, saveUninitialized: true }));
 
-// Auth middleware
+// Auth middleware for JWT
 app.use("/customer/auth/*", function auth(req, res, next) {
     const authHeader = req.session.authorization;
     if (!authHeader) return res.status(401).json({ message: "User not logged in" });

@@ -16,39 +16,39 @@ public_users.post("/register", (req,res) => {
 
 // Get all books
 public_users.get('/', async (req,res) => {
-    res.send(JSON.stringify(books, null, 4));
+    res.json(books);
 });
 
 // Get book details by ISBN
 public_users.get('/isbn/:isbn', async (req, res) => {
     const isbn = req.params.isbn;
     const book = books[isbn];
-    if (book) res.send(JSON.stringify(book, null, 4));
-    else res.status(404).json({ message: "Book not found" });
+    if (book) return res.json(book);
+    return res.status(404).json({ message: "Book not found" });
 });
 
 // Get books by author
 public_users.get('/author/:author', async (req, res) => {
     const author = req.params.author.toLowerCase();
     const result = Object.values(books).filter(book => book.author.toLowerCase() === author);
-    if (result.length > 0) res.send(JSON.stringify(result, null, 4));
-    else res.status(404).json({ message: "No books found for this author" });
+    if (result.length > 0) return res.json(result);
+    return res.status(404).json({ message: "No books found for this author" });
 });
 
 // Get books by title
 public_users.get('/title/:title', async (req, res) => {
     const title = req.params.title.toLowerCase();
     const result = Object.values(books).filter(book => book.title.toLowerCase() === title);
-    if (result.length > 0) res.send(JSON.stringify(result, null, 4));
-    else res.status(404).json({ message: "No books found with this title" });
+    if (result.length > 0) return res.json(result);
+    return res.status(404).json({ message: "No books found with this title" });
 });
 
 // Get book reviews by ISBN
 public_users.get('/review/:isbn', async (req, res) => {
     const isbn = req.params.isbn;
     const book = books[isbn];
-    if (book) res.send(JSON.stringify(book.reviews, null, 4));
-    else res.status(404).json({ message: "Book not found" });
+    if (book) return res.json(book.reviews);
+    return res.status(404).json({ message: "Book not found" });
 });
 
 module.exports.general = public_users;

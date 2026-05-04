@@ -7,13 +7,13 @@ let users = [];
 
 const isValid = (username) => {
     return users.some(user => user.username === username);
-}
+};
 
 const authenticatedUser = (username, password) => {
     return users.some(user => user.username === username && user.password === password);
-}
+};
 
-// Login route
+// Login route with JWT returned
 regd_users.post("/login", (req,res) => {
     const { username, password } = req.body;
     if (!username || !password) return res.status(400).json({ message: "Username and password required" });
@@ -21,7 +21,7 @@ regd_users.post("/login", (req,res) => {
     if (authenticatedUser(username, password)) {
         const token = jwt.sign({ username }, "access", { expiresIn: "1h" });
         req.session.authorization = { token, username };
-        return res.status(200).json({ message: "Logged in successfully" });
+        return res.status(200).json({ message: "Logged in successfully", token });
     }
     return res.status(401).json({ message: "Invalid credentials" });
 });
